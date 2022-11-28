@@ -1,48 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import useForm from '../../hooks/useForm';
+import Button from '../forms/Button';
+import Input from '../forms/Input';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const username = useForm();
+  const password = useForm();
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch('https://dogsapi.origamid.dev/json/jwt-auth/v1/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((res) => {
-        console.log(res);
-        return res.json();
+    if (username.validate() && password.validate()) {
+      fetch('https://dogsapi.origamid.dev/json/jwt-auth/v1/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(),
       })
-      .then((json) => console.log(json));
+        .then((res) => {
+          console.log(res);
+          return res.json();
+        })
+        .then((json) => console.log(json));
+    }
   }
 
   return (
     <div>
       <h1>Login</h1>
       <form action="" onSubmit={handleSubmit}>
-        <label htmlFor="name">Nome</label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-
-        <label htmlFor="password">Senha</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Entrar</button>
+        <Input label="Usuário" type="text" name="username" {...username} />
+        <Input label="Senha" type="password" name="password" {...password} />
+        <Button>Entrar</Button>
       </form>
       <Link to="/login/create">Cadastro</Link>
     </div>
