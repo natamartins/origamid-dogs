@@ -1,0 +1,26 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+
+  &_logo{
+    padding: .5rem;
+  }
+  &_login {
+   color: #333; 
+   display: flex;
+   align-items: center;
+  }
+
+  &_login::after{
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 17px;
+    background-image: url('../assets/usuario.svg' ) ;
+    margin-left: .5rem;
+    position: relative;
+    top: -1px;
+  }
+}
