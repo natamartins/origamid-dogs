@@ -1,28 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import useForm from '../../hooks/useForm';
-import Button from '../forms/Button';
-import Input from '../forms/Input';
+import React from "react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import useForm from "../../hooks/useForm";
+import { userContext } from "../../userContext";
+import Button from "../forms/Button";
+import Input from "../forms/Input";
 
 const LoginForm = () => {
   const username = useForm();
   const password = useForm();
 
-  function handleSubmit(e) {
+  const { userLogin, error, loading } = useContext(userContext);
+
+  async function handleSubmit(e) {
     e.preventDefault();
+
     if (username.validate() && password.validate()) {
-      fetch('https://dogsapi.origamid.dev/json/jwt-auth/v1/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(),
-      })
-        .then((res) => {
-          console.log(res);
-          return res.json();
-        })
-        .then((json) => console.log(json));
+      userLogin(username.value, password.value);
     }
   }
 
@@ -32,7 +26,12 @@ const LoginForm = () => {
       <form action="" onSubmit={handleSubmit}>
         <Input label="Usuário" type="text" name="username" {...username} />
         <Input label="Senha" type="password" name="password" {...password} />
-        <Button>Entrar</Button>
+        {loading ? (
+          <Button disabled>Carregando...</Button>
+        ) : (
+          <Button>Entrar</Button>
+        )}
+        {error && <p>{error}</p>}
       </form>
       <Link to="/login/create">Cadastro</Link>
     </div>
