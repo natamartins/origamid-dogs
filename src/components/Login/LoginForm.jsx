@@ -5,6 +5,7 @@ import useForm from "../../hooks/useForm";
 import { userContext } from "../../userContext";
 import Button from "../forms/Button";
 import Input from "../forms/Input";
+import Error from "../helper/Error";
 
 const LoginForm = () => {
   const username = useForm();
@@ -21,9 +22,9 @@ const LoginForm = () => {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form action="" onSubmit={handleSubmit}>
+    <section className="animeLeft">
+      <h1 className="title">Login</h1>
+      <form className="form" onSubmit={handleSubmit}>
         <Input label="Usuário" type="text" name="username" {...username} />
         <Input label="Senha" type="password" name="password" {...password} />
         {loading ? (
@@ -31,10 +32,20 @@ const LoginForm = () => {
         ) : (
           <Button>Entrar</Button>
         )}
-        {error && <p>{error}</p>}
+        <Error error={error} />
       </form>
-      <Link to="/login/create">Cadastro</Link>
-    </div>
+      <Link className="perdeu" to="/login/perdeu">
+        Perdeu a Senha?
+      </Link>
+
+      <div className="cadastro">
+        <h2 className="subtitle">Cadastre-se</h2>
+        <p>Ainda não possui conta? Cadastre-se no site.</p>
+        <Link className="btn-card" to="/login/create">
+          Cadastro
+        </Link>
+      </div>
+    </section>
   );
 };
 
